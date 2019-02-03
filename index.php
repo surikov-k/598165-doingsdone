@@ -2,6 +2,8 @@
 // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
 
+$categories = ["Входящие", "Учеба", "Работа", "Домашние дела", "Авто"];
+
 
 ?>
 <!DOCTYPE html>
@@ -48,10 +50,12 @@ $show_complete_tasks = rand(0, 1);
 
                 <nav class="main-navigation">
                     <ul class="main-navigation__list">
+                    <?php foreach($categories as $category):?>
                         <li class="main-navigation__list-item">
-                            <a class="main-navigation__list-item-link" href="#">Название проекта</a>
+                            <a class="main-navigation__list-item-link" href="#"><?=$category?></a>
                             <span class="main-navigation__list-item-count">0</span>
                         </li>
+                    <?php endforeach; ?>
                     </ul>
                 </nav>
 
