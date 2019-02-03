@@ -1,6 +1,8 @@
 <?php
 // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -89,7 +91,14 @@ $show_complete_tasks = rand(0, 1);
                                 <span class="checkbox__text">Сделать главную страницу Дела в порядке</span>
                             </label>
                         </td>
-                        <?php if ($show_complete_tasks):?>
+
+                        <td class="task__file">
+                            <a class="download-link" href="#">Home.psd</a>
+                        </td>
+
+                        <td class="task__date"></td>
+                    </tr>
+                     <?php if ($show_complete_tasks):?>
                           <tr class="tasks__item task task--completed">
                             <td class="task__select">
                                 <label class="checkbox task__checkbox">
@@ -103,12 +112,6 @@ $show_complete_tasks = rand(0, 1);
                             </td>
                         </tr>
                         <?php endif ?>
-                        <td class="task__file">
-                            <a class="download-link" href="#">Home.psd</a>
-                        </td>
-
-                        <td class="task__date"></td>
-                    </tr>
                     <!--показывать следующий тег <tr/>, если переменная $show_complete_tasks равна единице-->
                 </table>
             </main>
