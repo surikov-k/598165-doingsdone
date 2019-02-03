@@ -125,32 +125,32 @@ $task_list = [
                     </label>
                 </div>
 
-                <table class="tasks">
-                <?php foreach($task_list as $task):?>
-                    <?php if(!$task['completed']):?>
-                        <tr class="tasks__item task">
-                        <td class="task__select">
-                            <label class="checkbox task__checkbox">
-                                <input class="checkbox__input visually-hidden" type="checkbox">
-                                <span class="checkbox__text"><?=$task['title']?></span>
-                            </label>
-                        </td>
-                        <td class="task__date"><?=$task['due_date']?></td>
-                        <td class="task__controls"></td>
-                        </tr>
-                    <?php elseif($show_complete_tasks):?>
-                        <tr class="tasks__item task task--completed">
+                <?php function show_task($task) {
+                    $tr_class_list = 'tasks__item task';
+                    $checked = null;
+                    if ($task['completed']) {
+                        $tr_class_list.=' task--completed';
+                        $checked = 'checked';
+                    }?>
+                    <tr class="<?=$tr_class_list?>">
                             <td class="task__select">
                                 <label class="checkbox task__checkbox">
-                                    <input class="checkbox__input visually-hidden" type="checkbox" checked>
+                                    <input class="checkbox__input visually-hidden" type="checkbox" <?=$checked?>>
                                     <span class="checkbox__text"><?=$task['title']?></span>
                                 </label>
                             </td>
                             <td class="task__date"><?=$task['due_date']?></td>
                             <td class="task__controls"></td>
                         </tr>
-                    <?php endif;?>
-                <?php endforeach?>
+                <?php };?>
+
+
+                <table class="tasks">
+                <?php foreach($task_list as $task) {
+                    if(!$task['completed'] || $task['completed'] && $show_complete_tasks) {
+                        show_task($task);
+                    }
+                }?>
                 </table>
             </main>
         </div>
