@@ -40,7 +40,7 @@ $task_list = [
         'due_date' => null,
         'category' => '	Домашние дела',
         'completed' => false
-    ],
+    ]
 ];
 
 ?>
@@ -127,36 +127,30 @@ $task_list = [
 
                 <table class="tasks">
                 <?php foreach($task_list as $task):?>
-                <?php endforeach?>
-                    <tr class="tasks__item task">
+                    <?php if(!$task['completed']):?>
+                        <tr class="tasks__item task">
                         <td class="task__select">
                             <label class="checkbox task__checkbox">
-                                <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
-                                <span class="checkbox__text">Сделать главную страницу Дела в порядке</span>
+                                <input class="checkbox__input visually-hidden" type="checkbox">
+                                <span class="checkbox__text"><?=$task['title']?></span>
                             </label>
                         </td>
-
-                        <td class="task__file">
-                            <a class="download-link" href="#">Home.psd</a>
-                        </td>
-
-                        <td class="task__date"></td>
-                    </tr>
-                     <?php if ($show_complete_tasks):?>
-                          <tr class="tasks__item task task--completed">
+                        <td class="task__date"><?=$task['due_date']?></td>
+                        <td class="task__controls"></td>
+                        </tr>
+                    <?php elseif($show_complete_tasks):?>
+                        <tr class="tasks__item task task--completed">
                             <td class="task__select">
                                 <label class="checkbox task__checkbox">
                                     <input class="checkbox__input visually-hidden" type="checkbox" checked>
-                                    <span class="checkbox__text">Записаться на интенсив "Базовый PHP"</span>
+                                    <span class="checkbox__text"><?=$task['title']?></span>
                                 </label>
                             </td>
-                            <td class="task__date">10.10.2019</td>
-
-                            <td class="task__controls">
-                            </td>
+                            <td class="task__date"><?=$task['due_date']?></td>
+                            <td class="task__controls"></td>
                         </tr>
-                        <?php endif ?>
-                    <!--показывать следующий тег <tr/>, если переменная $show_complete_tasks равна единице-->
+                    <?php endif;?>
+                <?php endforeach?>
                 </table>
             </main>
         </div>
