@@ -4,7 +4,7 @@ $show_complete_tasks = rand(0, 1);
 
 $categories = ["Входящие", "Учеба", "Работа", "Домашние дела", "Авто"];
 
-$task_list = [
+$tasks = [
     [
         'title' => 'Собеседование в IT компании',
         'due_date' => '01.12.2019',
@@ -38,7 +38,7 @@ $task_list = [
     [
         'title' => 'Заказать пиццу',
         'due_date' => null,
-        'category' => '	Домашние дела',
+        'category' => 'Домашние дела',
         'completed' => false
     ]
 ];
@@ -125,13 +125,15 @@ $task_list = [
                     </label>
                 </div>
 
-                <?php function show_task($task) {
+                <table class="tasks">
+                <?php foreach($tasks as $task) {
+                    if(!$task['completed'] || $show_complete_tasks) {
                     $tr_class_list = 'tasks__item task';
                     $checked = null;
                     if ($task['completed']) {
                         $tr_class_list.=' task--completed';
                         $checked = 'checked';
-                    }?>
+                }?>
                     <tr class="<?=$tr_class_list?>">
                             <td class="task__select">
                                 <label class="checkbox task__checkbox">
@@ -142,14 +144,7 @@ $task_list = [
                             <td class="task__date"><?=$task['due_date']?></td>
                             <td class="task__controls"></td>
                         </tr>
-                <?php };?>
-
-
-                <table class="tasks">
-                <?php foreach($task_list as $task) {
-                    if(!$task['completed'] || $task['completed'] && $show_complete_tasks) {
-                        show_task($task);
-                    }
+                <?php }
                 }?>
                 </table>
             </main>
