@@ -23,22 +23,37 @@
                 </div>
 
                 <table class="tasks">
-                <?php foreach($tasks as $task) {
+                <?php
+                    $now_ts = time();
+
+                    foreach($tasks as $task) {
+
                     if(!$task['completed'] || $show_complete_tasks) {
-                    $tr_class_list = 'tasks__item task';
-                    $checked = null;
+                        $tr_class_list = 'tasks__item task';
+                        $checked = null;
+
+                        if($task['due_date'] && !$task['completed']) {
+                            $due_ts = strtotime($task['due_date']) + 23 * 59 * 60 + 59;
+                            $diff_hours = floor(($due_ts - $now_ts) / 60 / 60);
+
+                            if ($diff_hours < 24) {
+                                $tr_class_list .= ' task--important';
+                            }
+                        }
+
                     if ($task['completed']) {
-                        $tr_class_list.=' task--completed';
+                        $tr_class_list .= ' task--completed';
                         $checked = 'checked';
-                }?>
-                    <tr class="<?=$tr_class_list?>">
+                    }?>
+
+                    <tr class="<?= $tr_class_list ?>">
                             <td class="task__select">
                                 <label class="checkbox task__checkbox">
-                                    <input class="checkbox__input visually-hidden" type="checkbox" <?=$checked?>>
-                                    <span class="checkbox__text"><?=htmlspecialchars($task['title']);?></span>
+                                    <input class="checkbox__input visually-hidden" type="checkbox" <?= $checked ?>>
+                                    <span class="checkbox__text"><?= htmlspecialchars($task['title']) ?></span>
                                 </label>
                             </td>
-                            <td class="task__date"><?=htmlspecialchars($task['due_date']);?></td>
+                            <td class="task__date"><?= htmlspecialchars($task['due_date']); ?></td>
                             <td class="task__controls"></td>
                         </tr>
                 <?php }
