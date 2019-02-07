@@ -55,16 +55,16 @@ function count_tasks($tasks, $task_category) {
     return $counter;
 }
 
-$index_content = include_template('index.php',
-    ['tasks' => $tasks,
-    'show_complete_tasks' =>  $show_complete_tasks]);
+$index_content = include_template('index.php', [
+    'tasks' => $tasks,
+    'show_complete_tasks' =>  $show_complete_tasks
+]);
 
-$layout_content = include_template('layout.php',
-    ['title' => 'Дела в порядке',
+$layout_content = include_template('layout.php', [
+    'title' => 'Дела в порядке',
     'categories' => $categories,
     'tasks' => $tasks,
     'content' => $index_content
-    ]);
+]);
 
 print ($layout_content);
-?>
