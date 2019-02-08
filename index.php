@@ -9,13 +9,15 @@ $categories = ["Входящие", "Учеба", "Работа", "Домашни
 $tasks = [
     [
         'title' => 'Собеседование в IT компании',
-        'due_date' => '01.12.2019',
+        // 'due_date' => '01.12.2019',
+        'due_date' => '08.02.2019',
         'category' => 'Работа',
         'completed' => false
     ],
     [
         'title' => 'Выполнить тестовое задание',
-        'due_date' => '25.12.2019',
+        // 'due_date' => '25.12.2019',
+        'due_date' => '25.12.2018',
         'category' => 'Работа',
         'completed' => false
     ],
@@ -55,16 +57,32 @@ function count_tasks($tasks, $task_category) {
     return $counter;
 }
 
-$index_content = include_template('index.php',
-    ['tasks' => $tasks,
-    'show_complete_tasks' =>  $show_complete_tasks]);
+function is_due_date($date) {
+    if(!$date) {
+        return false;
+    }
 
-$layout_content = include_template('layout.php',
-    ['title' => 'Дела в порядке',
+    $now_ts = time();
+    $due_ts = strtotime($date) + 24 * 60 * 60;
+    $diff_hours = floor(($due_ts - $now_ts) / 60 / 60);
+
+    if ($diff_hours <= 24) {
+        return true;
+    }
+
+    return false;
+}
+
+$index_content = include_template('index.php', [
+    'tasks' => $tasks,
+    'show_complete_tasks' =>  $show_complete_tasks
+]);
+
+$layout_content = include_template('layout.php', [
+    'title' => 'Дела в порядке',
     'categories' => $categories,
     'tasks' => $tasks,
     'content' => $index_content
-    ]);
+]);
 
 print ($layout_content);
-?>

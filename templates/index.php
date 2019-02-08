@@ -23,25 +23,33 @@
                 </div>
 
                 <table class="tasks">
-                <?php foreach($tasks as $task) {
-                    if(!$task['completed'] || $show_complete_tasks) {
-                    $tr_class_list = 'tasks__item task';
-                    $checked = null;
-                    if ($task['completed']) {
-                        $tr_class_list.=' task--completed';
-                        $checked = 'checked';
-                }?>
-                    <tr class="<?=$tr_class_list?>">
-                            <td class="task__select">
-                                <label class="checkbox task__checkbox">
-                                    <input class="checkbox__input visually-hidden" type="checkbox" <?=$checked?>>
-                                    <span class="checkbox__text"><?=htmlspecialchars($task['title']);?></span>
-                                </label>
-                            </td>
-                            <td class="task__date"><?=htmlspecialchars($task['due_date']);?></td>
-                            <td class="task__controls"></td>
-                        </tr>
-                <?php }
-                }?>
+                <?php
+                    foreach($tasks as $task) {
+
+                        if(!$task['completed'] || $show_complete_tasks) {
+                            $tr_class_list = 'tasks__item task';
+                            $checked = null;
+
+                            if(!$task['completed'] && is_due_date($task['due_date'])) {
+                                $tr_class_list .= ' task--important';
+                            }
+
+                            if ($task['completed']) {
+                                $tr_class_list .= ' task--completed';
+                                $checked = 'checked';
+                            }?>
+
+                            <tr class="<?= $tr_class_list ?>">
+                                <td class="task__select">
+                                    <label class="checkbox task__checkbox">
+                                        <input class="checkbox__input visually-hidden" type="checkbox" <?= $checked ?>>
+                                        <span class="checkbox__text"><?= htmlspecialchars($task['title']) ?></span>
+                                    </label>
+                                </td>
+                                <td class="task__date"><?= htmlspecialchars($task['due_date']); ?></td>
+                                <td class="task__controls"></td>
+                            </tr>
+                        <?php }
+                        }?>
                 </table>
             </main>
