@@ -10,7 +10,7 @@ $tasks = [
     [
         'title' => 'Собеседование в IT компании',
         // 'due_date' => '01.12.2019',
-        'due_date' => '07.02.2019',
+        'due_date' => '08.02.2019',
         'category' => 'Работа',
         'completed' => false
     ],
@@ -55,6 +55,22 @@ function count_tasks($tasks, $task_category) {
         }
     }
     return $counter;
+}
+
+function is_due_date($date) {
+    if(!$date) {
+        return false;
+    }
+
+    $now_ts = time();
+    $due_ts = strtotime($date) + 24 * 60 * 60;
+    $diff_hours = floor(($due_ts - $now_ts) / 60 / 60);
+
+    if ($diff_hours <= 24) {
+        return true;
+    }
+
+    return false;
 }
 
 $index_content = include_template('index.php', [
