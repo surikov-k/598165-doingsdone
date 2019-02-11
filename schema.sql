@@ -17,10 +17,11 @@ CREATE TABLE tasks (
   create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   due_date TIMESTAMP,
   completion_time TIMESTAMP,
-  status BOOL DEFAULT 0,
+  status BOOL DEFAULT FALSE,
   title CHAR(255) NOT NULL,
   attachment CHAR(128),
-  user_id INT NOT NULL
+  user_id INT NOT NULL,
+  project_id INT
 );
 
 CREATE INDEX t_user ON tasks(user_id);
