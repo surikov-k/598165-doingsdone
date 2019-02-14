@@ -1,76 +1,35 @@
 <?php
 require_once('functions.php');
+require_once('init.php');
 
 // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
 
-$categories = ["Входящие", "Учеба", "Работа", "Домашние дела", "Авто"];
+$CURRENT_USER_ID =1;
 
-$tasks = [
-    [
-        'title' => 'Собеседование в IT компании',
-        // 'due_date' => '01.12.2019',
-        'due_date' => '08.02.2019',
-        'category' => 'Работа',
-        'completed' => false
-    ],
-    [
-        'title' => 'Выполнить тестовое задание',
-        // 'due_date' => '25.12.2019',
-        'due_date' => '25.12.2018',
-        'category' => 'Работа',
-        'completed' => false
-    ],
-    [
-        'title' => 'Сделать задание первого раздела',
-        'due_date' => '21.12.2019',
-        'category' => 'Учеба',
-        'completed' => true
-    ],
-    [
-        'title' => 'Встреча с другом',
-        'due_date' => '22.12.2019',
-        'category' => 'Входящие',
-        'completed' => false
-    ],
-    [
-        'title' => 'Купить корм для кота',
-        'due_date' => null,
-        'category' => 'Домашние дела',
-        'completed' => false
-    ],
-    [
-        'title' => 'Заказать пиццу',
-        'due_date' => null,
-        'category' => 'Домашние дела',
-        'completed' => false
-    ]
-];
+if (!$link) {
+    $error = mysqli_connect_error();
+    $index_content = include_template('error.php', ['error' => $error]);
+} else {
+    $sql_projects = 'SELECT title FROM projects WHERE user_id = "' . $CURRENT_USER_ID . '";';
+    $result_projects = mysqli_query($link, $sql_projects);
 
-function count_tasks($tasks, $task_category) {
-    $counter = 0;
-    foreach ($tasks as $task) {
-        if ($task['category'] === $task_category) {
-            $counter++;
-        }
-    }
-    return $counter;
-}
+    $sql_tasks = 'SELECT * FROM tasks JOIN projects ON project_id = projects.id WHERE tasks.user_id ="' . $CURRENT_USER_ID . '";';
+    $result_tasks = mysqli_query($link, $sql_tasks);
 
-function is_due_date($date) {
-    if(!$date) {
-        return false;
+    if($result_projects) {
+        $categories = mysqli_fetch_all($result_projects, MYSQLI_ASSOC);
+    } else {
+        $error = mysqli_error($link);
+        $index_content = include_template('error.php', ['error' => $error]);
     }
 
-    $now_ts = time();
-    $due_ts = strtotime($date) + 24 * 60 * 60;
-    $diff_hours = floor(($due_ts - $now_ts) / 60 / 60);
-
-    if ($diff_hours <= 24) {
-        return true;
+    if($result_tasks) {
+        $tasks = mysqli_fetch_all($result_tasks, MYSQLI_ASSOC);
+    } else {
+        $error = mysqli_error($link);
+        $index_content = include_template('error.php', ['error' => $error]);
     }
-
-    return false;
 }
 
 $index_content = include_template('index.php', [
@@ -86,3 +45,4 @@ $layout_content = include_template('layout.php', [
 ]);
 
 print ($layout_content);
+
