@@ -46,7 +46,7 @@
                                         <span class="checkbox__text"><?= htmlspecialchars($task['title']) ?></span>
                                     </label>
                                 </td>
-                                <td class="task__date"><?= htmlspecialchars($task['due_date']); ?></td>
+                                <td class="task__date"><?= date_format(date_create(htmlspecialchars($task['due_date'])), 'd/m/Y'); ?></td>
                                 <td class="task__controls"></td>
                             </tr>
                         <?php }

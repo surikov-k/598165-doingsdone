@@ -16,3 +16,29 @@
         return $result;
     }
 
+function count_tasks($tasks, $task_category) {
+    $counter = 0;
+    foreach ($tasks as $task) {
+        if ($task['title'] === $task_category) {
+            $counter++;
+        }
+    }
+    return $counter;
+}
+
+function is_due_date($date) {
+    if(!$date) {
+        return false;
+    }
+
+    $now_ts = time();
+    $due_ts = strtotime($date) + 24 * 60 * 60;
+    $diff_hours = floor(($due_ts - $now_ts) / 60 / 60);
+
+    if ($diff_hours <= 24) {
+        return true;
+    }
+
+    return false;
+}
+

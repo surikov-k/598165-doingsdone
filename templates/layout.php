@@ -44,8 +44,8 @@
                     <ul class="main-navigation__list">
                     <?php foreach($categories as $category):?>
                         <li class="main-navigation__list-item">
-                            <a class="main-navigation__list-item-link" href="#"><?=htmlspecialchars($category);?></a>
-                            <span class="main-navigation__list-item-count"><?=count_tasks($tasks, $category);?></span>
+                            <a class="main-navigation__list-item-link" href="#"><?=htmlspecialchars($category['title']);?></a>
+                            <span class="main-navigation__list-item-count"><?=count_tasks($tasks, $category['title']);?></span>
                         </li>
                     <?php endforeach; ?>
                     </ul>
