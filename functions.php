@@ -16,10 +16,10 @@
         return $result;
     }
 
-function count_tasks($tasks, $task_category) {
+function count_tasks($tasks, $project_title) {
     $counter = 0;
     foreach ($tasks as $task) {
-        if ($task['title'] === $task_category) {
+        if ($task['project_title'] === $project_title) {
             $counter++;
         }
     }
