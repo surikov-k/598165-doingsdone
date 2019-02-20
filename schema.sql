@@ -15,8 +15,8 @@ CREATE INDEX p_user ON projects(user_id);
 CREATE TABLE tasks (
   id INT AUTO_INCREMENT PRIMARY KEY,
   create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  due_date TIMESTAMP,
-  completion_time TIMESTAMP,
+  due_date DATETIME,
+  completion_time DATETIME,
   completed BOOL DEFAULT FALSE,
   title CHAR(255) NOT NULL,
   attachment CHAR(128),
