@@ -46,6 +46,20 @@
                                         <span class="checkbox__text"><?= htmlspecialchars($task['title']) ?></span>
                                     </label>
                                 </td>
+
+                                <?php
+                                    $link_class= '';
+                                    $file_link= '';
+
+                                    if (isset($task['attachment']) && $task['attachment'] !== '') {
+                                        $file_link = $task['attachment'];
+                                        $link_class = 'download-link';
+                                     }
+                                ?>
+
+                                <td class="task__file"><a class="<?= $link_class; ?>" href="<?= $file_link; ?>"><?= $file_link; ?></a></td>
+
+
                                 <td class="task__date"><?= date_format(date_create(htmlspecialchars($task['due_date'])), 'd/m/Y'); ?></td>
                                 <td class="task__controls"></td>
                             </tr>

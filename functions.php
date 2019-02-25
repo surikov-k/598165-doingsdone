@@ -74,7 +74,7 @@ function get_tasks($link, $user_id, $task_id = null) {
             JOIN projects p ON
                 t.project_id = p.id
             WHERE
-                t.user_id = ' . $user_id . ';';
+                t.user_id = ' . $user_id . ' ORDER BY t.create_time DESC;';
 
         $result_all_task = mysqli_query($link, $sql_all_tasks);
 
@@ -101,3 +101,63 @@ function get_tasks($link, $user_id, $task_id = null) {
         return mysqli_fetch_all($result_tasks, MYSQLI_ASSOC);
     }
 }
+
+
+function db_get_prepare_stmt($link, $sql, $data = []) {
+    $stmt = mysqli_prepare($link, $sql);
+
+    if ($data) {
+        $types = '';
+        $stmt_data = [];
+
+        foreach ($data as $value) {
+            $type = null;
+
+            if (is_int($value)) {
+                $type = 'i';
+            }
+            else if (is_string($value)) {
+                $type = 's';
+            }
+            else if (is_double($value)) {
+                $type = 'd';
+            }
+
+            if ($type) {
+                $types .= $type;
+                $stmt_data[] = $value;
+            }
+        }
+
+        $values = array_merge([$stmt, $types], $stmt_data);
+
+        $func = 'mysqli_stmt_bind_param';
+        $func(...$values);
+    }
+
+    return $stmt;
+}
+
+function compare_date_with_today ($date) {
+    $date = strtotime(date_format(date_create_from_format('Y.m.d', $date), 'Y-m-d'));
+    $date = $date + 24 * 60 * 60;
+    $diff = $date  - time();
+    return $diff;
+}
+
+function check_project_id($link, $project_id, $user_id) {
+    $sql_project =
+        'SELECT
+            *
+        FROM projects
+        WHERE
+           id = ' . $project_id . ' AND user_id = ' . $user_id . ';';
+
+    $result_project = mysqli_query($link, $sql_project);
+
+     if (!$result_project) {
+            return null;
+        }
+    return mysqli_num_rows($result_project) > 0;
+}
+
