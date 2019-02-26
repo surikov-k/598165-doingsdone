@@ -57,7 +57,7 @@
                             }
                     ?>
 
-                    <td class="task__file"><a class="<?= $link_class; ?>" href="<?= $file_link; ?>"><?= $file_link; ?></a></td>
+                    <td class="task__file"><a class="<?= $link_class ?>" href="<?= $file_link ?>"><?= $file_link ?></a></td>
 
 
                     <td class="task__date"><?= date_format(date_create(htmlspecialchars($task['due_date'])), 'd/m/Y'); ?></td>
