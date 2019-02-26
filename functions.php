@@ -161,3 +161,12 @@ function check_project_id($link, $project_id, $user_id) {
     return mysqli_num_rows($result_project) > 0;
 }
 
+function save_file() {
+    if (isset($_FILES['preview']['name'])) {
+        $file_name = $_FILES['preview']['name'];
+        $file_path = __DIR__ . '/';
+        $file_url =  $file_name;
+        move_uploaded_file($_FILES['preview']['tmp_name'], $file_path . $file_name);
+    }
+}
+

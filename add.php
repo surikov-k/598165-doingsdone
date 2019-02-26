@@ -44,12 +44,7 @@ if (!$link) {
             $content = include_template('add.php', ['task' => $task, 'projects' => $projects, 'errors' => $errors]);
         } else {
 
-            if ($_FILES['preview']['name']) {
-                $file_name = $_FILES['preview']['name'];
-                $file_path = __DIR__ . '/';
-                $file_url =  $file_name;
-                move_uploaded_file($_FILES['preview']['tmp_name'], $file_path . $file_name);
-            }
+            save_file();
 
             $sql = 'INSERT INTO tasks (due_date, title, attachment, project_id, user_id) VALUES ( ?, ?, ?, ?, ?)';
             $stmt = db_get_prepare_stmt($link, $sql, [$due_date, $task['name'], $file_url , $task['project'], $CURRENT_USER_ID]);
