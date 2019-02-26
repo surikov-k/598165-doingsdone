@@ -51,7 +51,7 @@ if (!$link) {
             $res = mysqli_stmt_execute($stmt);
 
             if ($res) {
-                $task = null;
+                // $task = null;
                 header('Location: index.php');
             } else {
                 $content = include_template('error.php', ['error' => mysqli_error($link)]);
