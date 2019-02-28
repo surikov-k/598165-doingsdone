@@ -14,7 +14,7 @@
         }
         if (!empty($form['email'])) {
             $email = mysqli_real_escape_string($link, $form['email']);
-            $user = check_email_exists($link, $email);
+            $user = get_user($link, $email);
 
             if(!$user) {
                 $errors['email'] = 'Такой пользователь не найден';
@@ -30,14 +30,14 @@
 
 
         if (count($errors)) {
-             $page_content = include_template('form-authorization.php', ['form' => $form, 'errors' => $errors]);
+             $page_content = include_template('auth.php', ['form' => $form, 'errors' => $errors]);
         }
 
     } else {
         if (isset($_SESSION['user'])) {
             header("Location: /index.php");
         } else {
-            $page_content = include_template('form-authorization.php', []);
+            $page_content = include_template('auth.php', []);
         }
     }
 

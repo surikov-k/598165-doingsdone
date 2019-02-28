@@ -19,7 +19,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['email'] = 'E-mail введён некорректно';
     } else {
         $email = mysqli_real_escape_string($link, $form['email']);
-        if(check_email_exists($link, $email)) {
+        if(get_user($link, $email)) {
             $errors['email'] = 'Пользователь с этим email уже зарегистрирован';
         }
     }
@@ -27,11 +27,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     if(count($errors)) {
         $content = include_template('register.php', ['form' => $form, 'errors' => $errors]);
     } else {
-        $hash = password_hash($form['password'], PASSWORD_DEFAULT);
-        $sql = 'INSERT INTO users (email, name,  password) VALUES (?, ?, ?)';
-        $stmt = db_get_prepare_stmt($link, $sql, [$form['email'], $form['name'], $hash]);
-        $res = mysqli_stmt_execute($stmt);
-        if ($res) {
+        $user = create_new_user($link, $form);
+        if ($user) {
+            $_SESSION['user'] = $user;
             header('Location: index.php');
         } else {
             $content = include_template('error.php', ['error' => mysqli_error($link)]);
