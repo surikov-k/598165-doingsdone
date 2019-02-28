@@ -1,8 +1,14 @@
 <?php
-$CURRENT_USER_ID =1;
 
 require_once('functions.php');
 require_once('init.php');
+
+if (!isset($_SESSION['user'])) {
+    header("Location: /guest.php");
+    die;
+}
+
+$CURRENT_USER_ID =$_SESSION['user']['id'];
 
 // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);

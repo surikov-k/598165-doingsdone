@@ -1,18 +1,18 @@
 <?php
-$CURRENT_USER_ID = 1;
-
-require_once('functions.php');
 require_once('init.php');
+require_once('functions.php');
 
+$CURRENT_USER_ID = $_SESSION['user']['id'];
+var_dump($_SESSION['user']['id']);
 
 $projects = get_projects($link, $CURRENT_USER_ID);
 $content = include_template('add.php', ['projects' => $projects]);
 
 $all_tasks = get_tasks($link, $CURRENT_USER_ID);
-if (!$all_tasks) {
-    $error = mysqli_error($link);
-    $content = include_template('error.php', ['error' => $error]);
-}
+// if (!$all_tasks) {
+//     $error = mysqli_error($link);
+//     $content = include_template('error.php', ['error' => $error]);
+// }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $required = ['name', 'project', 'date'];
@@ -49,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $res = mysqli_stmt_execute($stmt);
 
         if ($res) {
-            // $task = null;
             header('Location: index.php');
         } else {
             $content = include_template('error.php', ['error' => mysqli_error($link)]);

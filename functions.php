@@ -75,5 +75,5 @@
         if (!$result_email) {
                 return null;
             }
-        return mysqli_num_rows($result_email) > 0;
+        return mysqli_fetch_array($result_email, MYSQLI_ASSOC);
     }
