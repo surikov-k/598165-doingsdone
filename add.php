@@ -1,58 +1,60 @@
 <?php
-$CURRENT_USER_ID = 1;
-
-require_once('functions.php');
 require_once('init.php');
+require_once('functions.php');
 
+$user = $_SESSION['user'] ?? [];
+$projects = [];
+$all_tasks =[];
+$content = '';
 
-$projects = get_projects($link, $CURRENT_USER_ID);
-$content = include_template('add.php', ['projects' => $projects]);
+if (!empty($user)) {
 
-$all_tasks = get_tasks($link, $CURRENT_USER_ID);
-if (!$all_tasks) {
-    $error = mysqli_error($link);
-    $content = include_template('error.php', ['error' => $error]);
-}
+    $current_user_id = $user['id'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $required = ['name', 'project', 'date'];
-    $errors = [];
+    $projects = get_projects($link, $current_user_id);
+    $content = include_template('add.php', ['projects' => $projects]);
 
-    $task = $_POST;
-    $file_url = '';
+    $all_tasks = get_tasks($link, $current_user_id);
 
-    $due_date = $task['date'];
-    foreach ($required as $key) {
-        if (empty($_POST[$key])) {
-            $errors[$key] = 'Это поле надо заполнить';
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $required = ['name', 'project', 'date'];
+        $errors = [];
+
+        $task = $_POST;
+        $file_url = '';
+
+        $due_date = $task['date'];
+        foreach ($required as $key) {
+            if (empty($_POST[$key])) {
+                $errors[$key] = 'Это поле надо заполнить';
+            }
         }
-    }
 
-    if (!empty($task ['date'])) {
-        if (compare_date_with_today($task['date']) < 0) {
-            $errors['date'] = 'Выберете дату котороя не раньше сегодняшнего дня';
+        if (!empty($task ['date'])) {
+            if (compare_date_with_today($task['date']) < 0) {
+                $errors['date'] = 'Выберете дату котороя не раньше сегодняшнего дня';
+            }
         }
-    }
 
-    if(!check_project_id($link, $task['project'], $CURRENT_USER_ID)) {
-        $errors['project'] = 'Выберете существующий проект';
-    }
+        if(!check_project_id($link, $task['project'], $current_user_id)) {
+            $errors['project'] = 'Выберете существующий проект';
+        }
 
-    if (count($errors)) {
-        $content = include_template('add.php', ['task' => $task, 'projects' => $projects, 'errors' => $errors]);
-    } else {
-
-        $file_url= save_file();
-
-        $sql = 'INSERT INTO tasks (due_date, title, attachment, project_id, user_id) VALUES ( ?, ?, ?, ?, ?)';
-        $stmt = db_get_prepare_stmt($link, $sql, [$due_date, $task['name'], $file_url, $task['project'], $CURRENT_USER_ID]);
-        $res = mysqli_stmt_execute($stmt);
-
-        if ($res) {
-            // $task = null;
-            header('Location: index.php');
+        if (count($errors)) {
+            $content = include_template('add.php', ['task' => $task, 'projects' => $projects, 'errors' => $errors]);
         } else {
-            $content = include_template('error.php', ['error' => mysqli_error($link)]);
+
+            $file_url= save_file();
+
+            $sql = 'INSERT INTO tasks (due_date, title, attachment, project_id, user_id) VALUES ( ?, ?, ?, ?, ?)';
+            $stmt = db_get_prepare_stmt($link, $sql, [$due_date, $task['name'], $file_url, $task['project'], $current_user_id]);
+            $res = mysqli_stmt_execute($stmt);
+
+            if ($res) {
+                header('Location: index.php');
+            } else {
+                $content = include_template('error.php', ['error' => mysqli_error($link)]);
+            }
         }
     }
 }
@@ -62,7 +64,8 @@ $layout_content = include_template('layout.php', [
     'title' => 'Добавить задачу - Дела в порядке',
     'projects' => $projects,
     'tasks' => $all_tasks,
-    'content' => $content
+    'content' => $content,
+    'user' => $user
 ]);
 
 print ($layout_content);
