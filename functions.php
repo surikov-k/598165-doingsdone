@@ -63,17 +63,3 @@ function save_file() {
 }
 
 
-function get_user($link, $email) {
-    $sql_email =
-        "SELECT *
-        FROM users
-        WHERE email = '$email';";
-
-    $result_email = mysqli_query($link, $sql_email);
-
-    if (!$result_email) {
-            return null;
-        }
-    return mysqli_fetch_array($result_email, MYSQLI_ASSOC);
-}
-

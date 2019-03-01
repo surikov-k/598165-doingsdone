@@ -59,12 +59,17 @@ if (!empty($user)) {
     }
 }
 
+$sidebar = include_template('sidebar.php',[
+    'projects' => $projects,
+    'tasks' => $all_tasks,
+]);
 
 $layout_content = include_template('layout.php', [
     'title' => 'Добавить задачу - Дела в порядке',
     'projects' => $projects,
     'tasks' => $all_tasks,
     'content' => $content,
+    'sidebar' => $sidebar,
     'user' => $user
 ]);
 

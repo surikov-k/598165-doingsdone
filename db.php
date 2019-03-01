@@ -56,6 +56,22 @@ function create_project($link, $title, $user_id) {
 }
 
 
+function get_user($link, $email) {
+    $email = mysqli_real_escape_string($link, $email);
+    $sql_email =
+        "SELECT *
+        FROM users
+        WHERE email = '$email';";
+
+    $result_email = mysqli_query($link, $sql_email);
+
+    if (!$result_email) {
+            return null;
+        }
+    return mysqli_fetch_array($result_email, MYSQLI_ASSOC);
+}
+
+
 function create_new_user($link, $form) {
     $hash = password_hash($form['password'], PASSWORD_DEFAULT);
     $sql = 'INSERT INTO users (email, name,  password) VALUES (?, ?, ?)';

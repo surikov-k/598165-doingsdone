@@ -9,7 +9,9 @@ if (!isset($_SESSION['user'])) {
 
     $layout_content = include_template('layout.php', [
     'title' => 'Дела в порядке',
+    'body_class' => ' body-background',
     'content' => $index_content,
+    'sidebar' => '',
     'user' => []
     ]);
 
@@ -55,12 +57,18 @@ if (isset($_GET['id'])) {
         'show_complete_tasks' =>  $show_complete_tasks
     ]);
 }
+$sidebar = include_template('sidebar.php',[
+    'projects' => $projects,
+    'tasks' => $all_tasks,
+]);
 
 $layout_content = include_template('layout.php', [
     'title' => 'Дела в порядке',
+    'body_class' => '',
     'projects' => $projects,
     'tasks' => $all_tasks,
     'content' => $index_content,
+    'sidebar' => $sidebar,
     'user' => $_SESSION['user']
 ]);
 

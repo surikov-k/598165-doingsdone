@@ -13,8 +13,7 @@
             }
         }
         if (!empty($form['email'])) {
-            $email = mysqli_real_escape_string($link, $form['email']);
-            $user = get_user($link, $email);
+            $user = get_user($link, $form['email']);
 
             if(!$user) {
                 $errors['email'] = 'Такой пользователь не найден';
