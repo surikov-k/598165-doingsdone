@@ -25,7 +25,8 @@ $current_user_id =$_SESSION['user']['id'];
 $show_complete_tasks = rand(0, 1);
 
 
-$all_tasks = get_tasks($link, $current_user_id);
+$filter = $_GET['filter'] ?? '';
+$all_tasks = get_tasks($link, $current_user_id, 'all', 'all');
 
 if (!$all_tasks) {
     $error = mysqli_error($link);
@@ -39,24 +40,29 @@ if (!$projects) {
     $index_content = include_template('error.php', ['error' => $error]);
 }
 
+
 if (isset($_GET['id'])) {
-    $tasks = get_tasks($link, $current_user_id, $_GET['id']);
-    $index_content = include_template('index.php', [
-        'tasks' => $tasks,
-        'show_complete_tasks' =>  $show_complete_tasks
-    ]);
-    if(!$tasks) {
-        $error =  "Проект пуст или не существует";
+
+    if(!check_project_id($link, $_GET['id'], $current_user_id)) {
+        $error =  "Проект не существует";
         $index_content = include_template('error.php', ['error' => $error]);
         http_response_code(404);
+    } else {
+        $tasks = get_tasks($link, $current_user_id, $_GET['id'], $filter);
+        $index_content = include_template('index.php', [
+            'tasks' => $tasks,
+            'show_complete_tasks' =>  $show_complete_tasks
+        ]);
     }
+
 } else {
-    $tasks = $all_tasks;
+    $tasks = get_tasks($link, $current_user_id, 'all', $filter);
     $index_content = include_template('index.php', [
         'tasks' => $tasks,
         'show_complete_tasks' =>  $show_complete_tasks
     ]);
 }
+
 $sidebar = include_template('sidebar.php',[
     'projects' => $projects,
     'tasks' => $all_tasks,

@@ -37,21 +37,6 @@ function compare_date_with_today ($date) {
     return $diff;
 }
 
-function check_project_id($link, $project_id, $user_id) {
-    $sql_project =
-        "SELECT *
-        FROM projects
-        WHERE id = '$project_id' AND user_id = '$user_id';";
-
-    $result_project = mysqli_query($link, $sql_project);
-
-    if (!$result_project) {
-            return null;
-        }
-    return mysqli_num_rows($result_project) > 0;
-}
-
-
 function save_file() {
     if (isset($_FILES['preview']['name'])) {
         $file_name = $_FILES['preview']['name'];
@@ -62,4 +47,39 @@ function save_file() {
     }
 }
 
+
+function add_filter_to_url($param = null) {
+    if ($param) {
+        return '?' . http_build_query(array_merge($_GET, array('filter'=> $param)));
+    }
+
+    $url = $_SERVER['REQUEST_URI'];
+    $parsed = parse_url($url);
+
+    if (isset($parsed['query'])) {
+        $query = $parsed['query'];
+        parse_str($query, $params);
+        unset($params['filter']);
+        $string = http_build_query($params);
+        $string = $string ? '?' . $string : '/';
+        return $string;
+    }
+
+    return '/';
+}
+
+function  add_active_class($string) {
+    if (isset($_GET['filter'])) {
+        if ($_GET['filter'] === $string) {
+            return ' tasks-switch__item--active';
+        } else {
+            return '';
+        }
+    } else {
+        if (!$string) {
+            return ' tasks-switch__item--active';
+        }
+    }
+    return '';
+}
 

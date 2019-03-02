@@ -14,35 +14,44 @@ function get_projects($link, $user_id) {
 }
 
 
-function get_tasks($link, $user_id, $task_id = null) {
+function get_tasks($link, $user_id, $task_id = 'all', $filter = 'all') {
 
-    if ($task_id === null) {
-        $sql_all_tasks =
-            "SELECT t.*, p.title AS project_title
-            FROM tasks t
-            JOIN projects p ON t.project_id = p.id
-            WHERE t.user_id = '$user_id' ORDER BY t.create_time DESC;";
-
-        $result_all_task = mysqli_query($link, $sql_all_tasks);
-
-        if (!$result_all_task) {
-            return null;
+    switch ($filter) {
+            case 'today':
+                $date_condition = " AND t.due_date = CURDATE() ";
+                break;
+            case 'tomorrow':
+                $date_condition = " AND t.due_date = CURDATE() + 1";
+                break;
+            case 'overdue':
+                $date_condition = " AND t.due_date < CURDATE()";
+                break;
+            default:
+            $date_condition = "";
         }
-        return mysqli_fetch_all($result_all_task, MYSQLI_ASSOC);
+
+    if ($task_id !== 'all') {
+        $task_conditon = " AND t.project_id = '$task_id' ";
     } else {
-        $sql_tasks =
+        $task_conditon = "";
+    }
+
+    $sql =
         "SELECT t.*, p.title AS project_title
         FROM tasks t
         JOIN projects p ON t.project_id = p.id
-        WHERE t.user_id = '$user_id' AND t.project_id = '$task_id';";
+        WHERE t.user_id = '$user_id' " .
+        $date_condition .
+        $task_conditon .
+        " ORDER BY t.create_time DESC;";
 
-        $result_tasks = mysqli_query($link, $sql_tasks);
 
-        if (!$result_tasks) {
+    $result = mysqli_query($link, $sql);
+
+        if (!$result) {
             return null;
         }
-        return mysqli_fetch_all($result_tasks, MYSQLI_ASSOC);
-    }
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
 
@@ -97,6 +106,17 @@ function create_new_user($link, $form) {
     $user = get_user($link, $form['email']);
     create_project($link, 'Входящие', $user['id']);
     return $user;
+}
+
+
+function check_project_id($link, $project_id, $user_id) {
+    $sql_project =
+        "SELECT *
+        FROM projects
+        WHERE id = '$project_id' AND user_id = '$user_id';";
+
+    $result_project = mysqli_query($link, $sql_project);
+    return mysqli_num_rows($result_project) > 0;
 }
 
 
