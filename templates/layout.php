@@ -10,7 +10,7 @@
 </head>
 
 <?php
-    // $body_class = empty($user) ? ' body-background' : '';
+    $body_class = empty($user) ? ' body-background' : '';
     $contanier_class = !empty($user) ? ' container--with-sidebar' : '';
 ?>
 

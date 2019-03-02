@@ -46,7 +46,7 @@ if (isset($_GET['id'])) {
         'show_complete_tasks' =>  $show_complete_tasks
     ]);
     if(!$tasks) {
-        $error =  "Проект " . htmlspecialchars($_GET['id']) . " не существует";
+        $error =  "Проект пуст или не существует";
         $index_content = include_template('error.php', ['error' => $error]);
         http_response_code(404);
     }

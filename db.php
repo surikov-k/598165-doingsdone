@@ -55,6 +55,20 @@ function create_project($link, $title, $user_id) {
     return $result_projects;
 }
 
+function get_project($link, $title, $user_id) {
+    $sql_project =
+    "SELECT *
+    FROM projects
+    WHERE title = '$title' AND user_id = '$user_id'";
+    $result_project = mysqli_query($link, $sql_project);
+
+    if (!$result_project) {
+            return null;
+        }
+
+    return mysqli_fetch_array($result_project, MYSQLI_ASSOC);
+}
+
 
 function get_user($link, $email) {
     $email = mysqli_real_escape_string($link, $email);
