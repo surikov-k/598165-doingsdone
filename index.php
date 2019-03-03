@@ -20,9 +20,30 @@ if (!isset($_SESSION['user'])) {
 }
 
 $current_user_id =$_SESSION['user']['id'];
+$show_complete_tasks = '';
 
-// показывать или нет выполненные задачи
-$show_complete_tasks = rand(0, 1);
+if(isset($_SESSION['show_completed'])) {
+    $show_complete_tasks = $_SESSION['show_completed'];
+}
+
+if (isset($_GET['show_completed'])) {
+    $referer_url = $_SERVER['HTTP_REFERER'];
+    $_SESSION['show_completed'] = $_GET['show_completed'];
+    $show_complete_tasks = $_SESSION['show_completed'];
+    header("Location: " . $referer_url);
+}
+
+
+if (isset($_GET['check'])) {
+    $referer_url = $_SERVER['HTTP_REFERER'];
+    if(isset($_GET['task_id'])) {
+        if(check_task_id($link, $_GET['task_id'], $current_user_id)) {
+            change_task_status($link, $_GET['task_id'], $current_user_id);
+        }
+
+    }
+    header("Location: " . $referer_url);
+}
 
 
 $filter = $_GET['filter'] ?? '';

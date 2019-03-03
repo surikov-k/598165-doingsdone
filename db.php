@@ -120,3 +120,27 @@ function check_project_id($link, $project_id, $user_id) {
 }
 
 
+function check_task_id($link, $task_id, $user_id) {
+    $sql =
+        "SELECT *
+        FROM tasks
+        WHERE id = '$task_id' AND user_id = '$user_id';";
+
+    $result = mysqli_query($link, $sql);
+    return mysqli_num_rows($result) > 0;
+}
+
+
+function change_task_status($link, $task_id, $user_id) {
+    $sql =
+    "UPDATE tasks
+    SET completed = NOT completed
+    WHERE id = '$task_id' AND user_id = '$user_id';
+    ";
+    $result = mysqli_query($link, $sql);
+    if (!$result) {
+        return false;
+    }
+    return true;
+}
+

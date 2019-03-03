@@ -15,13 +15,14 @@ var $taskCheckboxes = document.getElementsByClassName('tasks');
 if ($taskCheckboxes.length) {
 
   $taskCheckboxes[0].addEventListener('change', function (event) {
-    if (event.target.classList.contains('task__checkbox')) {
+    if (event.target.classList.contains('checkbox__input')) {
       var el = event.target;
 
       var is_checked = +el.checked;
       var task_id = el.getAttribute('value');
 
       var url = '/index.php?task_id=' + task_id + '&check=' + is_checked;
+      console.log(url);
       window.location = url;
     }
   });
