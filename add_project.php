@@ -32,12 +32,11 @@ if (!empty($user)) {
             } else {
                 $content = include_template('error.php', ['error' => $mysqli_error($link)]);
             }
-
         }
     }
 }
 
-$sidebar = include_template('sidebar.php',[
+$sidebar = include_template('sidebar.php', [
     'projects' => $projects,
     'tasks' => $all_tasks,
 ]);
@@ -51,4 +50,4 @@ $layout_content = include_template('layout.php', [
     'user' => $user
 ]);
 
-print ($layout_content);
+print($layout_content);

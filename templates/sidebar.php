@@ -9,9 +9,9 @@
                     href="/?id=<?= $project['id'] ?>">
                     <?= htmlspecialchars($project['title']) ?>
                 </a>
-                <span class="main-navigation__list-item-count"><?=count_tasks($tasks, $project['title']);?></span>
+                <span class="main-navigation__list-item-count"><?= count_tasks($tasks, $project['title']) ?></span>
             </li>
-        <?php endforeach; ?>
+        <?php endforeach ?>
         </ul>
     </nav>
 

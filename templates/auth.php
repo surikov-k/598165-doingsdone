@@ -47,7 +47,7 @@
 
             <?php if (isset($errors['email'])): ?>
                 <p class="form__message"><?= $errors['email'] ?></p>
-            <?php endif; ?>
+            <?php endif ?>
 
           </div>
 
@@ -61,7 +61,7 @@
             <input class="form__input <?= $error_class ?>" type="password" name="password" id="password" value="<?= $input_value ?>" placeholder="Введите пароль">
             <?php if (isset($errors['password'])): ?>
                 <p class="form__message"><?= $errors['password']?></p>
-            <?php endif; ?>
+            <?php endif ?>
           </div>
 
           <div class="form__row form__row--controls">

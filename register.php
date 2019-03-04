@@ -4,7 +4,7 @@ require_once('functions.php');
 
 $content = include_template('register.php', []);
 
-if($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $required = ['email', 'password', 'name'];
     $errors = [];
     $form = $_POST;
@@ -19,12 +19,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['email'] = 'E-mail введён некорректно';
     } else {
         $email = mysqli_real_escape_string($link, $form['email']);
-        if(get_user($link, $email)) {
+        if (get_user($link, $email)) {
             $errors['email'] = 'Пользователь с этим email уже зарегистрирован';
         }
     }
 
-    if(count($errors)) {
+    if (count($errors)) {
         $content = include_template('register.php', ['form' => $form, 'errors' => $errors]);
     } else {
         $user = create_new_user($link, $form);
@@ -44,4 +44,4 @@ $layout_content = include_template('layout.php', [
     'content' => $content
 ]);
 
-print ($layout_content);
+print($layout_content);

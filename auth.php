@@ -7,15 +7,15 @@
 
         $required = ['email', 'password'];
         $errors = [];
-        foreach( $required as $field) {
-            if(empty($form[$field])) {
+        foreach ($required as $field) {
+            if (empty($form[$field])) {
                 $errors[$field] = 'Это поле надо заполнить';
             }
         }
         if (!empty($form['email'])) {
             $user = get_user($link, $form['email']);
 
-            if(!$user) {
+            if (!$user) {
                 $errors['email'] = 'Такой пользователь не найден';
             } else {
                 if (password_verify($form['password'], $user['password'])) {
@@ -27,11 +27,9 @@
             }
         }
 
-
         if (count($errors)) {
-             $page_content = include_template('auth.php', ['form' => $form, 'errors' => $errors]);
+            $page_content = include_template('auth.php', ['form' => $form, 'errors' => $errors]);
         }
-
     } else {
         if (isset($_SESSION['user'])) {
             header("Location: /index.php");

@@ -2,7 +2,8 @@
 require_once('utils.php');
 require_once('db.php');
 
-function count_tasks($tasks, $project_title) {
+function count_tasks($tasks, $project_title)
+{
     $counter = 0;
     foreach ($tasks as $task) {
         if ($task['project_title'] === $project_title) {
@@ -12,9 +13,9 @@ function count_tasks($tasks, $project_title) {
     return $counter;
 }
 
-
-function is_due_date($date) {
-    if(!$date) {
+function is_due_date($date)
+{
+    if (!$date) {
         return false;
     }
 
@@ -29,15 +30,16 @@ function is_due_date($date) {
     return false;
 }
 
-
-function compare_date_with_today ($date) {
+function compare_date_with_today($date)
+{
     $date = strtotime(date_format(date_create_from_format('Y.m.d', $date), 'Y-m-d'));
     $date = $date + 24 * 60 * 60;
     $diff = $date  - time();
     return $diff;
 }
 
-function save_file() {
+function save_file()
+{
     if (isset($_FILES['preview']['name'])) {
         $file_name = $_FILES['preview']['name'];
         $file_path = __DIR__ . '/';
@@ -47,8 +49,8 @@ function save_file() {
     }
 }
 
-
-function add_filter_to_url($param = null) {
+function add_filter_to_url($param = null)
+{
     if ($param) {
         return '?' . http_build_query(array_merge($_GET, array('filter'=> $param)));
     }
@@ -68,7 +70,8 @@ function add_filter_to_url($param = null) {
     return '/';
 }
 
-function  add_active_class($string) {
+function add_active_class($string)
+{
     if (isset($_GET['filter'])) {
         if ($_GET['filter'] === $string) {
             return ' tasks-switch__item--active';
@@ -82,4 +85,3 @@ function  add_active_class($string) {
     }
     return '';
 }
-

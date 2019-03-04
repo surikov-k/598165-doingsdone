@@ -11,7 +11,7 @@ if (!$link) {
         'tasks' => [],
         'content' => $content
     ]);
-    print ($layout_content);
+    print($layout_content);
     die;
 } else {
     mysqli_set_charset($link, 'utf8');

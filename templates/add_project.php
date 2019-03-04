@@ -12,7 +12,7 @@
             <input class="form__input <?= $error_class?>" type="text" name="project_name" id="project_name" value="<?= $project ?>" placeholder="Введите название проекта">
             <?php if (isset($error)): ?>
                 <p class="form__message"><?= $error?></p>
-            <?php endif; ?>
+            <?php endif ?>
           </div>
 
           <div class="form__row form__row--controls">

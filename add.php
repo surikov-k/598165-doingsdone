@@ -8,7 +8,6 @@ $all_tasks =[];
 $content = '';
 
 if (!empty($user)) {
-
     $current_user_id = $user['id'];
 
     $projects = get_projects($link, $current_user_id);
@@ -36,14 +35,13 @@ if (!empty($user)) {
             }
         }
 
-        if(!check_project_id($link, $task['project'], $current_user_id)) {
+        if (!check_project_id($link, $task['project'], $current_user_id)) {
             $errors['project'] = 'Выберете существующий проект';
         }
 
         if (count($errors)) {
             $content = include_template('add.php', ['task' => $task, 'projects' => $projects, 'errors' => $errors]);
         } else {
-
             $file_url= save_file();
 
             $sql = 'INSERT INTO tasks (due_date, title, attachment, project_id, user_id) VALUES ( ?, ?, ?, ?, ?)';
@@ -59,7 +57,7 @@ if (!empty($user)) {
     }
 }
 
-$sidebar = include_template('sidebar.php',[
+$sidebar = include_template('sidebar.php', [
     'projects' => $projects,
     'tasks' => $all_tasks,
 ]);
@@ -73,4 +71,4 @@ $layout_content = include_template('layout.php', [
     'user' => $user
 ]);
 
-print ($layout_content);
+print($layout_content);
