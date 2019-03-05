@@ -1,53 +1,52 @@
 <?php
-    function include_template($name, $data) {
-        $name = 'templates/' . $name;
-        $result = '';
+function include_template($name, $data)
+{
+    $name = 'templates/' . $name;
+    $result = '';
 
-        if (!is_readable($name)) {
-            return $result;
-        }
-
-        ob_start();
-        extract($data);
-        require $name;
-
-        $result = ob_get_clean();
-
+    if (!is_readable($name)) {
         return $result;
     }
 
-    function db_get_prepare_stmt($link, $sql, $data = []) {
-        $stmt = mysqli_prepare($link, $sql);
+    ob_start();
+    extract($data);
+    require $name;
 
-        if ($data) {
-            $types = '';
-            $stmt_data = [];
+    $result = ob_get_clean();
 
-            foreach ($data as $value) {
-                $type = null;
+    return $result;
+}
 
-                if (is_int($value)) {
-                    $type = 'i';
-                }
-                else if (is_string($value)) {
-                    $type = 's';
-                }
-                else if (is_double($value)) {
-                    $type = 'd';
-                }
+function db_get_prepare_stmt($link, $sql, $data = [])
+{
+    $stmt = mysqli_prepare($link, $sql);
 
-                if ($type) {
-                    $types .= $type;
-                    $stmt_data[] = $value;
-                }
+    if ($data) {
+        $types = '';
+        $stmt_data = [];
+
+        foreach ($data as $value) {
+            $type = null;
+
+            if (is_int($value)) {
+                $type = 'i';
+            } elseif (is_string($value)) {
+                $type = 's';
+            } elseif (is_double($value)) {
+                $type = 'd';
             }
 
-            $values = array_merge([$stmt, $types], $stmt_data);
-
-            $func = 'mysqli_stmt_bind_param';
-            $func(...$values);
+            if ($type) {
+                $types .= $type;
+                $stmt_data[] = $value;
+            }
         }
 
-        return $stmt;
+        $values = array_merge([$stmt, $types], $stmt_data);
+
+        $func = 'mysqli_stmt_bind_param';
+        $func(...$values);
     }
 
+    return $stmt;
+}

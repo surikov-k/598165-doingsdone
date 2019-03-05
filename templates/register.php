@@ -29,7 +29,7 @@
         <input class="form__input <?= $error_class ?>" type="password" name="password" id="password" value="<?= $password ?>" placeholder="Введите пароль">
         <?php if (isset($errors['password'])): ?>
             <p class="form__message"><?= $errors['password'] ?></p>
-        <?php endif; ?>
+        <?php endif ?>
     </div>
 
     <div class="form__row">
@@ -42,13 +42,13 @@
         <input class="form__input <?= $error_class ?>" type="text" name="name" id="name" value="<?= $name ?>" placeholder="Введите имя">
         <?php if (isset($errors['name'])): ?>
             <p class="form__message"><?= $errors['name'] ?></p>
-        <?php endif; ?>
+        <?php endif ?>
     </div>
 
     <div class="form__row form__row--controls">
         <?php if (!empty($errors)): ?>
             <p class="error-message">Пожалуйста, исправьте ошибки в форме</p>
-        <?php endif; ?>
+        <?php endif ?>
 
         <input class="button" type="submit" name="" value="Зарегистрироваться">
     </div>
