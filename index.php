@@ -25,6 +25,8 @@ if (isset($_SESSION['show_completed'])) {
     $show_complete_tasks = $_SESSION['show_completed'];
 }
 
+
+
 if (isset($_GET['show_completed'])) {
     $referer_url = $_SERVER['HTTP_REFERER'];
     $_SESSION['show_completed'] = $_GET['show_completed'];
@@ -44,6 +46,8 @@ if (isset($_GET['check'])) {
 
 $filter = $_GET['filter'] ?? '';
 $all_tasks = get_tasks($link, $current_user_id, 'all', 'all');
+
+$search = $_GET['q'] ?? '';
 
 if (!$all_tasks) {
     $error = mysqli_error($link);
@@ -75,6 +79,18 @@ if (isset($_GET['id'])) {
         'tasks' => $tasks,
         'show_complete_tasks' =>  $show_complete_tasks
     ]);
+}
+
+if ($search) {
+    $tasks = search_tasks($link, $search, $current_user_id);
+    if($tasks) {
+        $index_content = include_template('index.php', [
+                'tasks' => $tasks,
+                'show_complete_tasks' =>  $show_complete_tasks
+            ]);
+    } else {
+        $index_content = include_template('empty_search.php', []);
+    }
 }
 
 $sidebar = include_template('sidebar.php', [

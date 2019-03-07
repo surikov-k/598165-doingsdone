@@ -152,3 +152,21 @@ function add_task($link, $due_date, $task_title, $file_url, $project, $user_id)
     $stmt = db_get_prepare_stmt($link, $sql, [$due_date, $task_title, $file_url, $project, $user_id]);
     return mysqli_stmt_execute($stmt);
 }
+
+function search_tasks($link, $search, $user_id)
+{
+    $sql =
+    "SELECT * FROM tasks
+    JOIN users ON tasks.user_id = '$user_id'
+    WHERE MATCH(title) AGAINST(?);
+    ";
+    $stmt = db_get_prepare_stmt($link, $sql, [$search]);
+    mysqli_stmt_execute($stmt);
+    $result= mysqli_stmt_get_result($stmt);
+    $tasks = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    if(empty($tasks)) {
+        return false;
+    }
+    return $tasks;
+}

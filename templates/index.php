@@ -1,8 +1,8 @@
 <main class="content__main">
     <h2 class="content__main-heading">Список задач</h2>
 
-    <form class="search-form" action="index.php" method="post">
-        <input class="search-form__input" type="text" name="" value="" placeholder="Поиск по задачам">
+    <form class="search-form" action="index.php" method="get">
+        <input class="search-form__input" type="text" name="q" value="" placeholder="Поиск по задачам">
 
         <input class="search-form__submit" type="submit" name="" value="Искать">
     </form>
@@ -48,12 +48,12 @@
 
                     <?php
                         $link_class= '';
-                $file_link= '';
+                        $file_link= '';
 
-                if (isset($task['attachment']) && $task['attachment'] !== '') {
-                    $file_link = $task['attachment'];
-                    $link_class = 'download-link';
-                } ?>
+                        if (isset($task['attachment']) && $task['attachment'] !== '') {
+                            $file_link = $task['attachment'];
+                            $link_class = 'download-link';
+                        } ?>
 
                     <td class="task__file"><a class="<?= $link_class ?>" href="<?= $file_link ?>"><?= $file_link ?></a></td>
 
