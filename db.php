@@ -145,3 +145,10 @@ function change_task_status($link, $task_id, $user_id)
     }
     return true;
 }
+
+function add_task($link, $due_date, $task_title, $file_url, $project, $user_id)
+{
+    $sql = 'INSERT INTO tasks (due_date, title, attachment, project_id, user_id) VALUES ( ?, ?, ?, ?, ?)';
+    $stmt = db_get_prepare_stmt($link, $sql, [$due_date, $task_title, $file_url, $project, $user_id]);
+    return mysqli_stmt_execute($stmt);
+}

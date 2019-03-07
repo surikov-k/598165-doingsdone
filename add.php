@@ -44,11 +44,7 @@ if (!empty($user)) {
         } else {
             $file_url= save_file();
 
-            $sql = 'INSERT INTO tasks (due_date, title, attachment, project_id, user_id) VALUES ( ?, ?, ?, ?, ?)';
-            $stmt = db_get_prepare_stmt($link, $sql, [$due_date, $task['name'], $file_url, $task['project'], $current_user_id]);
-            $res = mysqli_stmt_execute($stmt);
-
-            if ($res) {
+            if (add_task($link, $due_date, $task['name'], $file_url, $task['project'], $current_user_id)) {
                 header('Location: index.php');
             } else {
                 $content = include_template('error.php', ['error' => mysqli_error($link)]);
