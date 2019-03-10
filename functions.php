@@ -23,11 +23,7 @@ function is_due_date($date)
     $due_ts = strtotime($date) + 24 * 60 * 60;
     $diff_hours = floor(($due_ts - $now_ts) / 60 / 60);
 
-    if ($diff_hours <= 24) {
-        return true;
-    }
-
-    return false;
+    return $diff_hours <= 24;
 }
 
 function compare_date_with_today($date)

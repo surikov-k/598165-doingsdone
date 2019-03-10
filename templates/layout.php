@@ -53,13 +53,13 @@
         <?php endif; ?>
 
         <?php if (empty($user)): ?>
-            <?= $content?>
+            <?= $content ?>
         <?php else: ?>
             <div class="content">
             <?= $sidebar ?>
             <?= $content ?>
             </div>
-        <?php endif; ?>
+        <?php endif ?>
 
 
     </div>

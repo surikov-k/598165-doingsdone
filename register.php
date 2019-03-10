@@ -4,7 +4,7 @@ require_once('functions.php');
 
 $content = include_template('register.php', []);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $required = ['email', 'password', 'name'];
     $errors = [];
     $form = $_POST;
