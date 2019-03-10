@@ -30,10 +30,12 @@ if (!empty($user)) {
             if (create_project($link, $project, $current_user_id)) {
                 header('Location: index.php');
             } else {
-                $content = include_template('error.php', ['error' => $mysqli_error($link)]);
+                $content = include_template('error.php', ['error' => mysqli_error($link)]);
             }
         }
     }
+} else {
+    header("Location: index.php");
 }
 
 $sidebar = include_template('sidebar.php', [

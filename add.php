@@ -51,6 +51,8 @@ if (!empty($user)) {
             }
         }
     }
+} else {
+    header("Location: index.php");
 }
 
 $sidebar = include_template('sidebar.php', [
