@@ -1,4 +1,10 @@
 <?php
+/**
+ * Возвращает список проектов
+ * @param resource $link Идентификатор соединения
+ * @param int $user_id Индетификатор пользователя
+ * @return array Список проектов
+ */
 function get_projects($link, $user_id)
 {
     $sql_projects =
@@ -14,6 +20,13 @@ function get_projects($link, $user_id)
     return mysqli_fetch_all($result_projects, MYSQLI_ASSOC);
 }
 
+/**
+ * Возвращает список задач или конкретную задачу
+ * @param resource $link Идентификатор соединения
+ * @param int $user_id Индетификатор пользователя
+ * @param int $task_id Индетификатор задачи
+ * @return array Список задач
+ */
 function get_tasks($link, $user_id, $task_id = 'all', $filter = 'all')
 {
     switch ($filter) {
@@ -54,7 +67,13 @@ function get_tasks($link, $user_id, $task_id = 'all', $filter = 'all')
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
-
+/**
+ * Создает проект
+ * @param resource $link Идентификатор соединения
+ * @param string $title Название проекта
+ * @param int $user_id Индетификатор пользователя
+ * @return mixed $result_projects Результат операции
+ */
 function create_project($link, $title, $user_id)
 {
     $sql_projects =
@@ -65,6 +84,13 @@ function create_project($link, $title, $user_id)
     return $result_projects;
 }
 
+/**
+ * Возвращает проект для конкретного пользователя
+ * @param resource $link Идентификатор соединения
+ * @param string $title Название проекта
+ * @param int $user_id Индетификатор пользователя
+ * @return array Проект
+ */
 function get_project($link, $title, $user_id)
 {
     $sql_project =
@@ -80,6 +106,12 @@ function get_project($link, $title, $user_id)
     return mysqli_fetch_array($result_project, MYSQLI_ASSOC);
 }
 
+/**
+ * Возвращает  пользователя
+ * @param resource $link Идентификатор соединения
+ * @param int $user_id Индетификатор пользователя
+ * @return array Пользователь
+ */
 function get_user($link, $email)
 {
     $email = mysqli_real_escape_string($link, $email);
@@ -96,6 +128,12 @@ function get_user($link, $email)
     return mysqli_fetch_array($result_email, MYSQLI_ASSOC);
 }
 
+/**
+ * Создает нового пользователя
+ * @param resource $link Идентификатор соединения
+ * @param array $form Данные формы
+ * @return array $user Пользователь
+ */
 function create_new_user($link, $form)
 {
     $hash = password_hash($form['password'], PASSWORD_DEFAULT);
@@ -110,6 +148,13 @@ function create_new_user($link, $form)
     return $user;
 }
 
+/**
+ * Проверяет существует ли проект
+ * @param resource $link Идентификатор соединения
+ * @param int $project_id Идентификатор проекта
+ * @param int $user_id Идентификатор пользователя
+ * @return array $user Пользователь
+ */
 function check_project_id($link, $project_id, $user_id)
 {
     $sql_project =
@@ -121,6 +166,13 @@ function check_project_id($link, $project_id, $user_id)
     return mysqli_num_rows($result_project) > 0;
 }
 
+/**
+ * Проверяет существует ли залача
+ * @param resource $link Идентификатор соединения
+ * @param int $task_id Идентификатор задачи
+ * @param int $user_id Идентификатор пользователя
+ * @return bool  Результат
+ */
 function check_task_id($link, $task_id, $user_id)
 {
     $sql =
@@ -132,6 +184,13 @@ function check_task_id($link, $task_id, $user_id)
     return mysqli_num_rows($result) > 0;
 }
 
+/**
+ * Изменяет статус задачи
+ * @param resource $link Идентификатор соединения
+ * @param int $task_id Индетификатор задачи
+ * @param int $user_id Индетификатор пользователя
+ * @return bool  Результат
+ */
 function change_task_status($link, $task_id, $user_id)
 {
     $sql =
@@ -146,6 +205,16 @@ function change_task_status($link, $task_id, $user_id)
     return true;
 }
 
+/**
+ * Добавляет задачу
+ * @param resource $link Идентификатор соединения
+ * @param string $due_date Дата выполнения
+ * @param string $task_title Название задачи
+ * @param string $file_url Путь к файлу
+ * @param int $project Индетификатор проекта
+ * @param int $user_id Индетификатор пользователя
+ * @return bool  Результат
+ */
 function add_task($link, $due_date, $task_title, $file_url, $project, $user_id)
 {
     $sql = 'INSERT INTO tasks (due_date, title, attachment, project_id, user_id) VALUES ( ?, ?, ?, ?, ?)';
@@ -153,6 +222,13 @@ function add_task($link, $due_date, $task_title, $file_url, $project, $user_id)
     return mysqli_stmt_execute($stmt);
 }
 
+/**
+ * Поиск текста
+ * @param resource $link Идентификатор соединения
+ * @param string $search Строка поиска
+ * @param int $user_id Индетификатор пользователя
+ * @return array  Список задач
+ */
 function search_tasks($link, $search, $user_id)
 {
     $sql =

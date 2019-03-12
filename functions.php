@@ -2,6 +2,12 @@
 require_once('utils.php');
 require_once('db.php');
 
+/**
+ * Подсчитывает количество заздач в проекте
+ * @param array $tasks Список задач
+ * @param string $project_title Название проекта
+ * @return int $counter Количество задач
+ */
 function count_tasks($tasks, $project_title)
 {
     $counter = 0;
@@ -13,6 +19,11 @@ function count_tasks($tasks, $project_title)
     return $counter;
 }
 
+/**
+ * Проверяет сегодня ли дэдлайн
+ * @param string $date Дата
+ * @return bool  Результат
+ */
 function is_due_date($date)
 {
     if (!$date) {
@@ -25,7 +36,11 @@ function is_due_date($date)
 
     return $diff_hours <= 24;
 }
-
+/**
+ * Сравнивает дату с текущей
+ * @param string $date Дата
+ * @return int $diff  Разница между текущей датой и данной
+ */
 function compare_date_with_today($date)
 {
     $date = strtotime(date_format(date_create_from_format('Y.m.d', $date), 'Y-m-d'));
@@ -34,6 +49,10 @@ function compare_date_with_today($date)
     return $diff;
 }
 
+/**
+ * Сохраняет файл в корень проекта
+ * @return string $file_url  Путь к файлу
+ */
 function save_file()
 {
     if (isset($_FILES['preview']['name'])) {
@@ -45,6 +64,11 @@ function save_file()
     }
 }
 
+/**
+ * Добавляет значение фильтра к URL
+ * @param string $param Фильтр
+ * @return string $string URL
+ */
 function add_filter_to_url($param = null)
 {
     if ($param) {
@@ -65,7 +89,11 @@ function add_filter_to_url($param = null)
 
     return '/';
 }
-
+/**
+ * Добавляет класс актвного фильтра
+ * @param string $string Фильтр
+ * @return string Класс
+ */
 function add_active_class($string)
 {
     if (isset($_GET['filter'])) {
